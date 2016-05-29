@@ -1,0 +1,18 @@
+{
+  "extends": "airbnb-base",
+  "plugins": [
+    "angular"
+  ],
+  "env": {
+    "browser": true,
+    "jquery": true
+  },
+  "globals": {
+    "angular": false,
+    "_": false,
+    "require": false
+  },
+  "rules": {
+    "global-require": 0
+  }
+}
