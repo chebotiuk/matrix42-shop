@@ -1,8 +1,8 @@
 import { routerConfig } from './index.routes';
-import { runBlock } from './index.run';
 
-import { entriesService } from './main/services/entries.service';
-import { currentEntryService } from './main/services/currentEntry.service';
+import { productsService } from './main/services/products.service';
+import { categoriesService } from './main/services/categories.service';
+import { cartService } from './main/services/cart.service';
 
 import { MainController } from './main/layout/main.controller.js';
 
@@ -25,9 +25,9 @@ const app = angular.module(
 
 app
   .config(routerConfig)
-  .run(runBlock)
-  .service('entriesService', entriesService)
-  .service('currentEntryService', currentEntryService)
+  .service('productsService', productsService)
+  .service('categoriesService', categoriesService)
+  .service('cartService', cartService)
   .controller('MainController', MainController);
 
 export default app;

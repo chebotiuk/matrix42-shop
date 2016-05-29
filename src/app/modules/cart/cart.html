@@ -1,54 +1,40 @@
-<div class="starter-template">
-  <div class="row">
-    <div class="col-sm-offset-2 col-sm-10">
-      <h1>Edit entry "<b>{{vm.entry.name}}</b>"</h1>
-    </div>
-  </div>
-  <form class="form-horizontal" name="vm.EditEntryForm" role="form" ng-submit="vm.edit()" novalidate>
-    <div class="row form-group">
-      <label for="email-input" class="col-sm-2 control-label">Email</label>
-      <div class="col-sm-10">
-        <input type="email" name="Email" id="email-input" tabindex="1" class="form-control" ng-model="vm.entry.email" required>
-      </div>
-      <div class="col-sm-offset-2 col-sm-10 error-container" ng-show="vm.submitted && vm.EditEntryForm.Email.$invalid">
-        <small class="error" ng-show="vm.EditEntryForm.Email.$error.required">Email field is required</small>
-        <small class="error" ng-show="vm.EditEntryForm.Email.$error.email">Email should be valid</small>
-      </div>
-    </div>
-    <div class="row form-group">
-      <label for="name-input" class="col-sm-2 control-label">Name</label>
-      <div class="col-sm-10">
-        <input type="text" name="Name" id="name-input" tabindex="2" class="form-control" ng-model="vm.entry.name" required>
-      </div>
-      <div class="col-sm-offset-2 col-sm-10 error-container" ng-show="vm.submitted && vm.EditEntryForm.Name.$invalid">
-        <small class="error" ng-show="vm.EditEntryForm.Name.$error.required">Name field is required</small>
-      </div>
-    </div>
-    <div class="row form-group">
-      <label for="date-input" class="col-sm-2 control-label">Date of Birth</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <input type="text" name="DateOfBirth" id="date-input" class="form-control" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.entry.dateOfBirth" is-open="vm.datepickerOpened" datepicker-options="dateOptions" close-text="Close" required>
-          <span class="input-group-btn">
-            <button type="button" tabindex="5" class="btn btn-default" ng-click="vm.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-offset-2 col-sm-10 error-container" ng-show="vm.submitted && vm.EditEntryForm.DateOfBirth.$invalid">
-        <small class="error" ng-show="vm.EditEntryForm.DateOfBirth.$error.required">Date of Birth field is required</small>
-        <small class="error" ng-show="vm.EditEntryForm.DateOfBirth.$invalid && vm.EditEntryForm.DateOfBirth.$dirty">Enter date in format MM/dd/yyyy</small>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-offset-2 col-sm-10">
-        <div class="alert alert-danger" role="alert" ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
-        <div class="alert alert-success" role="alert" ng-show="vm.successMessage">{{vm.successMessage}}</div>
-      </div>
-    </div>
-    <div class="row form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <input type="submit" class="btn btn-primary" value="Save">
-      </div>
-    </div>
-  </form>
+<div class="table-responsive">
+  <table class="table table-bordered tbl-cart">
+    <thead>
+      <tr>
+        <th class="hidden-xs">Image</th>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Sub Total</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="product in vm.cartProducts track by $index">
+        <td class="hidden-xs">
+          <img ng-src="{{ product.image }}" alt="product.name" width="47" height="47">
+        </td>
+        <td>
+          {{ product.name }}
+        </td>
+        <td>
+          <input type="number" name="quantity" value="{{ product.count }}" min="1" class="form-control" />
+        </td>
+        <td class="price" ng-bind="product.price"></td>
+        <td>{{ product.price * product.count }}</td>
+        <td class="text-center">
+          <a href ng-click="vm.removeFromCart($index)">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td class="hidden-xs"></td>
+        <td colspan="3" align="right">Total</td>
+        <td class="total" colspan="2"><b>$ 163.47</b>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

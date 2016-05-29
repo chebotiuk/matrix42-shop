@@ -1,72 +1,50 @@
-export class EntriesController {
-  constructor(page, entriesService, $timeout, $state, $uibModal) {
+export class ProductsController {
+  constructor(productsService, categoriesService, cartService, $timeout, $state) {
     'ngInject';
 
-    this.entries = null;
-    this.totalEntries = null;
-    this.currentPage = page;
+    this.products = null;
+    this.currentPage = 1;
+    this.perPage = 6;
+    this.categories = null;
+    this.filteredCategories = [];
+    this.search = '';
 
-    this.entriesService = entriesService;
+    this.productsService = productsService;
+    this.categoriesService = categoriesService;
+    this.cartService = cartService;
     this.$timeout = $timeout;
     this.$state = $state;
-    this.$uibModal = $uibModal;
 
-    this.activate(this.currentPage);
+    this.activate();
   }
 
-  activate(page) {
-    this.entriesService.getEntries(page)
+  activate() {
+    this.productsService.get()
       .then((response) => {
         this.$timeout(() => {
-          this.totalEntries = response.totalEntries;
-          this.entries = response.entries;
+          this.products = response;
         });
       });
+
+    this.categoriesService.get()
+      .then((response) => {
+        this.$timeout(() => {
+          this.categories = response;
+        })
+      })
   }
 
-  pageChanged(newPage) {
-    this.$state.go('index.all', { page: newPage });
+  selectCategory(category) {
+    var indexOf = this.filteredCategories.indexOf(category);
+
+    if (indexOf >= 0) {
+        this.filteredCategories.splice(indexOf, 1);
+    } else {
+        this.filteredCategories.push(category);
+    }
   }
 
-  editEntry(id) {
-    this.$state.go('index.edit', { entryId: id });
+  addToCart(product) {
+    this.cartService.add(product);
   }
-
-  removeEntry(id) {
-    const modalInstance = this.$uibModal.open({
-      template: `<div class="">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Do you really want to delete entry?</h4>
-                  </div>
-                  <div class="modal-footer">
-                    <button class="btn btn-white" ng-click="vm.cancel()">No</button>
-                    <button class="btn btn-primary" ng-click="vm.ok()">Yes</button>
-                  </div>
-                </div>`,
-      controller: class ModalConfirm {
-        constructor($uibModalInstance) {
-          'ngInject';
-
-          this.$uibModalInstance = $uibModalInstance;
-        }
-
-        ok() {
-          this.$uibModalInstance.close();
-        }
-
-        cancel() {
-          this.$uibModalInstance.dismiss('cancel');
-        }
-      },
-      controllerAs: 'vm',
-    });
-
-    modalInstance.result.then(() => {
-      this.entriesService.deleteEntry(id)
-        .then(() => {
-          this.activate(this.currentPage);
-        });
-    });
-  }
-
 }

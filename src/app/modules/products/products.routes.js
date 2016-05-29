@@ -1,11 +1,11 @@
 export function routerConfig($stateProvider, $urlRouterProvider) {
   'ngInject';
 
-  $urlRouterProvider.otherwise('/index/products/1');
+  $urlRouterProvider.otherwise('/products');
 
   $stateProvider
     .state('index.products', {
-      url: '/products/{page:int}',
+      url: '/products',
       templateUrl: 'src/app/modules/products/products.html',
       controller: 'ProductsController as vm',
     });
