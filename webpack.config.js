@@ -99,15 +99,6 @@ module.exports = {
         ]
       },
       {
-        test: /\.json$/,
-        include: [
-          path.resolve(path.join(paths.src, 'assets')),
-        ],
-        loaders: [
-          'file-loader?name=assets/[name].[ext]',
-        ],
-      },
-      {
         test: require.resolve('angular'),
         loaders: [
           'expose?angular'

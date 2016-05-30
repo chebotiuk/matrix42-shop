@@ -9,7 +9,7 @@ export class productsService {
   }
 
   getFromFile() {
-    return this.$http.get('src/assets/data/products.json');
+    return this.$http.get('/assets/data/products.json');
   }
 
   get() {
@@ -36,7 +36,7 @@ export class productsService {
       for (let i = cartProducts.length; i--;) {
         const index = _.findIndex(this.products, { id: cartProducts[i].id });
 
-        if (index) {
+        if (index >= 0) {
           this.products[index].inCart = true;
         }
       }

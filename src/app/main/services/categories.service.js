@@ -8,7 +8,7 @@ export class categoriesService {
   }
 
   getFromFile() {
-    return this.$http.get('src/assets/data/categories.json');
+    return this.$http.get('/assets/data/categories.json');
   }
 
   get() {

@@ -1,3 +1,5 @@
+import contentTpl from './main/layout/content.html';
+
 export function routerConfig($stateProvider) {
   'ngInject';
 
@@ -5,7 +7,7 @@ export function routerConfig($stateProvider) {
     .state('index', {
       url: '',
       abstract: true,
-      templateUrl: 'src/app/main/layout/content.html',
+      templateUrl: contentTpl,
       controller: 'MainController as main',
     });
 }

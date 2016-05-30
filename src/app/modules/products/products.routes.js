@@ -1,3 +1,5 @@
+import productsTpl from './products.html';
+
 export function routerConfig($stateProvider, $urlRouterProvider) {
   'ngInject';
 
@@ -6,7 +8,7 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('index.products', {
       url: '/products',
-      templateUrl: 'src/app/modules/products/products.html',
+      templateUrl: productsTpl,
       controller: 'ProductsController as vm',
     });
 }
