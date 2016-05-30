@@ -11,7 +11,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li ng-class="{'active': main.$state.includes('index.cart')}">
-          <a href ui-sref="index.cart">
+          <a class="btn" ng-disabled="main.cartIsEmpty" ng-click="main.goCart()">
             <i class="glyphicon glyphicon-shopping-cart"></i> Shopping Cart
           </a>
         </li>

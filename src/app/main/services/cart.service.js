@@ -12,28 +12,53 @@ export class cartService {
   }
 
   add(newProduct) {
-    console.log(newProduct);
-    if (_.find(this.cartProducts, { name: newProduct.name })) {
+    if (_.find(this.cartProducts, { id: newProduct.id })) {
       return Promise.reject({ message: 'This product is already in the cart' });
     }
 
-    newProduct.count = 1;
-    this.cartProducts.push(newProduct);
+    const tmpProduct = angular.copy(newProduct);
+
+    tmpProduct.quantity = 1;
+    this.cartProducts.push(tmpProduct);
     this.$window.localStorage.setItem('cart', angular.toJson(this.cartProducts));
+
+    return Promise.resolve();
   }
 
-  update(productIndex, newProduct) {
-    _.merge(this.cartProducts[productIndex], newProduct);
+  update() {
     this.$window.localStorage.setItem('cart', angular.toJson(this.cartProducts));
+
+    return Promise.resolve();
   }
 
   remove(productIndex) {
     this.cartProducts.splice(productIndex, 1);
     this.$window.localStorage.setItem('cart', angular.toJson(this.cartProducts));
+
+    return Promise.resolve();
+  }
+
+  removeById(productId) {
+    const productIndex = _.findIndex(this.cartProducts, { id: productId });
+
+    this.cartProducts.splice(productIndex, 1);
+    this.$window.localStorage.setItem('cart', angular.toJson(this.cartProducts));
+
+    return Promise.resolve();
+  }
+
+  isEmpty() {
+    if (this.cartProducts.length > 0) {
+      return false;
+    }
+
+    return true;
   }
 
   deleteCart() {
     this.cartProducts = [];
     this.$window.localStorage.removeItem('cart');
+
+    return Promise.resolve();
   }
 }

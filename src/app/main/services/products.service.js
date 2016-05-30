@@ -1,11 +1,11 @@
 export class productsService {
-  constructor($window, $http) {
+  constructor($http, cartService) {
     'ngInject';
 
-    this.products = angular.fromJson($window.localStorage.getItem('products')) || null;
+    this.products = null;
 
-    this.$window = $window;
     this.$http = $http;
+    this.cartService = cartService;
   }
 
   getFromFile() {
@@ -19,16 +19,27 @@ export class productsService {
       promise = this.getFromFile()
         .then((response) => {
           this.products = response.data;
-          this.$window.localStorage.setItem('products', angular.toJson(this.products));
         });
     }
 
     if (promise) {
-      return promise.then(() => {
-        return Promise.resolve(this.products);
-      });
-    } else {
-      return Promise.resolve(this.products);
+      return promise.then(() => Promise.resolve(this.products));
+    }
+
+    return Promise.resolve(this.products);
+  }
+
+  compareWithCart() {
+    const cartProducts = this.cartService.get();
+
+    if (cartProducts && cartProducts.length > 0) {
+      for (let i = cartProducts.length; i--;) {
+        const index = _.findIndex(this.products, { id: cartProducts[i].id });
+
+        if (index) {
+          this.products[index].inCart = true;
+        }
+      }
     }
   }
 }

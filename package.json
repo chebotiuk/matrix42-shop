@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "Matrix42 test task",
   "scripts": {
-    "dev": "webpack-dev-server",
-    "build": "webpack"
+    "dev": "webpack-dev-server --inline --watch --hot",
+    "build": "webpack -p --colors"
   },
   "dependencies": {
     "angular": "^1.5.5",

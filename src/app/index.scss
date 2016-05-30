@@ -7,6 +7,28 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
-.error-container .error {
-  color: #bb1109;
+.product-info {
+  padding: 0 8px 8px 8px;
+}
+
+.product-name {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   line-height: 26px;     /* fallback */
+   max-height: 52px;      /* fallback */
+   -webkit-line-clamp: 2; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
+
+.product-categories {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  min-height: 40px;
+}
+
+.product-price {
+  font-size: 28px;
+  line-height: 34px;
 }

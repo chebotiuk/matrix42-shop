@@ -4,8 +4,8 @@
 var path              = require('path');
 var webpack           = require('webpack');
 var autoprefixer      = require('autoprefixer-core');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var stylesLoader = 'css-loader?sourceMap!postcss-loader!sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true';
 
@@ -16,7 +16,6 @@ const paths = {
 
 module.exports = {
   // entry points
-  watch: true,
   entry: {
     vendor: path.resolve(path.join(paths.src, '/app/index.vendor.js')),
     app: path.resolve(path.join(paths.src, '/app/index.bootstrap.js')),
@@ -31,18 +30,18 @@ module.exports = {
 
   // resolves modules
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.css', '.json'],
     modulesDirectories: ['node_modules'],
   },
 
   module: {
-    // preLoaders: [{
-    //   test: /\.js$/,
-    //   include: [
-    //     path.resolve(path.join(paths.src, 'app')),
-    //   ],
-    //   loader: 'eslint-loader',
-    // }],
+    preLoaders: [{
+      test: /\.js$/,
+      include: [
+        path.resolve(path.join(paths.src, 'app')),
+      ],
+      loader: 'eslint-loader',
+    }],
     loaders: [
       {
         test: /\.html$/,
@@ -100,6 +99,15 @@ module.exports = {
         ]
       },
       {
+        test: /\.json$/,
+        include: [
+          path.resolve(path.join(paths.src, 'assets')),
+        ],
+        loaders: [
+          'file-loader?name=assets/[name].[ext]',
+        ],
+      },
+      {
         test: require.resolve('angular'),
         loaders: [
           'expose?angular'
@@ -124,7 +132,7 @@ module.exports = {
       children: true,
       minChunks: Infinity,
     }),
-    new ExtractTextPlugin('assets/styles/[name]' + '.[chunkhash].css', { allChunks: true }),
+    new ExtractTextPlugin('assets/styles/[name].[chunkhash].css', { allChunks: true }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.join(paths.src, 'index.html'),
@@ -133,7 +141,7 @@ module.exports = {
     // new webpack.optimize.UglifyJsPlugin({
     //   minimize: true,
     //   warnings: false,
-    //   sourceMap: true
+    //   sourceMap: false
     // })
   ],
 

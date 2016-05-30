@@ -1,40 +1,52 @@
-<div class="table-responsive">
-  <table class="table table-bordered tbl-cart">
-    <thead>
-      <tr>
-        <th class="hidden-xs">Image</th>
-        <th>Product Name</th>
-        <th>Quantity</th>
-        <th>Unit Price</th>
-        <th>Sub Total</th>
-        <th>Remove</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="product in vm.cartProducts track by $index">
-        <td class="hidden-xs">
-          <img ng-src="{{ product.image }}" alt="product.name" width="47" height="47">
-        </td>
-        <td>
-          {{ product.name }}
-        </td>
-        <td>
-          <input type="number" name="quantity" value="{{ product.count }}" min="1" class="form-control" />
-        </td>
-        <td class="price" ng-bind="product.price"></td>
-        <td>{{ product.price * product.count }}</td>
-        <td class="text-center">
-          <a href ng-click="vm.removeFromCart($index)">
-            <i class="glyphicon glyphicon-trash"></i>
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td class="hidden-xs"></td>
-        <td colspan="3" align="right">Total</td>
-        <td class="total" colspan="2"><b>$ 163.47</b>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="table-responsive">
+      <table class="table table-bordered tbl-cart">
+        <thead>
+          <tr>
+            <th class="hidden-xs">Image</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Sub Total</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="product in vm.cartProducts track by $index">
+            <td class="hidden-xs">
+              <img ng-src="{{ product.image }}" alt="product.name" width="47" height="47">
+            </td>
+            <td>
+              {{ product.name }}
+            </td>
+            <td>
+              <input type="number" name="quantity" min="1" class="form-control" ng-model="product.quantity">
+            </td>
+            <td class="price">{{ product.price | currency:"$":2}}</td>
+            <td>{{ product.price * product.quantity | currency:"$":2}}</td>
+            <td class="text-center">
+              <a class="btn btn-sm btn-danger" href ng-click="vm.removeFromCart($index)">
+                <i class="glyphicon glyphicon-trash"></i>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class="hidden-xs"></td>
+            <td colspan="3" align="right">Total</td>
+            <td class="total" colspan="2"><b>{{ vm.getTotal() | currency:"$":2 }}</b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+<div class="row">
+  <div class="col-xs-12">
+    <a class="btn btn-primary" href ui-sref="index.products"> <i class="glyphicon glyphicon-arrow-left"></i> Back to Shop</a>
+    <a class="btn btn-primary" href ng-click="vm.saveCart()">Save Cart</a>
+    <a class="btn btn-primary" href>Checkout <i class="glyphicon glyphicon-arrow-right"></i></a>
+  </div>
+</div>
+

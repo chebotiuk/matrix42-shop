@@ -1,5 +1,5 @@
 export class CartController {
-  constructor(cartService, $timeout) {
+  constructor(cartService, $timeout, $scope) {
     'ngInject';
 
     this.cartProducts = null;
@@ -8,22 +8,36 @@ export class CartController {
 
     this.cartService = cartService;
     this.$timeout = $timeout;
+    this.$scope = $scope;
 
     this.activate();
   }
 
   activate() {
     this.cartProducts = this.cartService.get();
-    // this.cartService.get()
-    //   .then((response) => {
-    //     this.$timeout(() => {
-    //       this.cartProducts = response;
-    //     });
-    //   });
   }
 
   removeFromCart(productIndex) {
-    this.cartService.remove(productIndex);
+    this.cartService.remove(productIndex)
+      .then(() => {
+        this.$scope.$emit('removeFromCart');
+      });
   }
 
+  getTotal() {
+    let total = 0;
+
+    for (let i = this.cartProducts.length; i--;) {
+      total += (this.cartProducts[i].price * this.cartProducts[i].quantity);
+    }
+
+    return total;
+  }
+
+  saveCart() {
+    this.cartService.update()
+      .then(() => {
+        // TODO: show notification
+      });
+  }
 }

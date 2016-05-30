@@ -1,5 +1,5 @@
 export class ProductsController {
-  constructor(productsService, categoriesService, cartService, $timeout, $state) {
+  constructor(productsService, categoriesService, cartService, $timeout, $scope) {
     'ngInject';
 
     this.products = null;
@@ -13,7 +13,7 @@ export class ProductsController {
     this.categoriesService = categoriesService;
     this.cartService = cartService;
     this.$timeout = $timeout;
-    this.$state = $state;
+    this.$scope = $scope;
 
     this.activate();
   }
@@ -23,28 +23,53 @@ export class ProductsController {
       .then((response) => {
         this.$timeout(() => {
           this.products = response;
+          this.productsService.compareWithCart();
         });
+      }, () => {
+        // TODO: show error notification
       });
 
     this.categoriesService.get()
       .then((response) => {
         this.$timeout(() => {
           this.categories = response;
-        })
-      })
+        });
+      }, () => {
+        // TODO: show error notification
+      });
   }
 
   selectCategory(category) {
-    var indexOf = this.filteredCategories.indexOf(category);
+    const indexOf = this.filteredCategories.indexOf(category);
 
     if (indexOf >= 0) {
-        this.filteredCategories.splice(indexOf, 1);
+      this.filteredCategories.splice(indexOf, 1);
     } else {
-        this.filteredCategories.push(category);
+      this.filteredCategories.push(category);
     }
   }
 
   addToCart(product) {
-    this.cartService.add(product);
+    this.cartService.add(product)
+      .then(() => {
+        /* eslint-disable no-param-reassign */
+        product.inCart = true;
+        /* eslint-enable no-param-reassign */
+        this.$scope.$emit('addToCart');
+      }, () => {
+        // TODO: show error notification
+      });
+  }
+
+  removeFromCart(product) {
+    this.cartService.removeById(product.id)
+      .then(() => {
+        /* eslint-disable no-param-reassign */
+        product.inCart = false;
+        /* eslint-enable no-param-reassign */
+        this.$scope.$emit('removeFromCart');
+      }, () => {
+        // TODO: show error notification
+      });
   }
 }

@@ -1,10 +1,9 @@
 export class categoriesService {
-  constructor($window, $http) {
+  constructor($http) {
     'ngInject';
 
-    this.categories = angular.fromJson($window.localStorage.getItem('categories')) || null;
+    this.categories = null;
 
-    this.$window = $window;
     this.$http = $http;
   }
 
@@ -12,25 +11,20 @@ export class categoriesService {
     return this.$http.get('src/assets/data/categories.json');
   }
 
-  get(page) {
+  get() {
     let promise;
 
     if (!this.categories) {
       promise = this.getFromFile()
         .then((response) => {
           this.categories = response.data;
-          this.$window.localStorage.setItem('categories', angular.toJson(this.categories));
         });
     }
 
     if (promise) {
-      return promise.then(() => {
-        return Promise.resolve(this.categories);
-      })
-    } else {
-      return Promise.resolve(this.categories);
+      return promise.then(() => Promise.resolve(this.categories));
     }
 
-
+    return Promise.resolve(this.categories);
   }
 }
