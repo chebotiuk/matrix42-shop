@@ -32,6 +32,12 @@ export class productsService {
   compareWithCart() {
     const cartProducts = this.cartService.get();
 
+    if (this.products && this.products.length > 0) {
+      for (let i = this.products.length; i--;) {
+        this.products[i].inCart = false;
+      }
+    }
+
     if (cartProducts && cartProducts.length > 0) {
       for (let i = cartProducts.length; i--;) {
         const index = _.findIndex(this.products, { id: cartProducts[i].id });

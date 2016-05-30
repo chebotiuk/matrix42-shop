@@ -10,5 +10,10 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
       url: '/products',
       templateUrl: productsTpl,
       controller: 'ProductsController as vm',
+      onEnter: (productsService) => {
+        'ngInject';
+
+        productsService.compareWithCart();
+      },
     });
 }
